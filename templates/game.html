@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Edit Game</title>
+	</head>
+	<body>
+		<h1>Rooms</h1>
+		<ul>
+			<li><a href="{{ url_for( 'add_context' ) }}">{new room}</li>
+			{% for key in game.possible %}
+				<li><a href="{{ url_for( 'context', roomid = key ) }}">{{ key }}</a></li>
+			{% endfor %}
+		</ul>
+	</body>
+	</html>
+{% endblock %}

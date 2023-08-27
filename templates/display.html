@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Displayed Dictionary Values</h1>
+  <ul>
+    {% for key, value in data_dict.items() %}
+      <li>{{ key }}: {{ value }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

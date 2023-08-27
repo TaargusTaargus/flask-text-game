@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text Game Player</title>
+</head>
+<body>
+    <nav>
+      <ul>
+        <li><a href="/game">Edit Game</a></li>
+      </ul>
+    </nav>
+    <h1>User Input App</h1>
+    <form method="POST">
+        <label for="user_input">Enter Text:</label>
+        <input type="text" name="user_input" id="user_input" value="{{ user_input }}" />
+        <button type="submit">Submit</button>
+    </form>
+    <div>
+        <h2>Response:</h2>
+        <p>{{ response }}</p>
+    </div>
+</body>
+</html>

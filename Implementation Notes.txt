@@ -1,0 +1,2 @@
+events represent CRUD operations on state of gamecontext (room)
+players can trigger changes to those rooms which are then reduced to a subset of operations

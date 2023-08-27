@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Edit Context</title>
+	</head>
+	<body>
+		<h1>Edit Context</h1>
+		<ul>
+			<li><a href="{{ url_for( 'add_event', roomid = roomid ) }}">{new event}</li>
+			{% for key in context.events %}
+				<li><a href="{{ url_for( 'edit_event', eid = key, roomid = roomid ) }}">{{ context.events[ key ][ 'key' ] }}</a></li>
+			{% endfor %}
+		</ul>
+	</body>
+	</html>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Edit Event</h1>  
+  <form method="POST">
+	<label>Event Name:</label>
+	<input type="text" name="key" value="{{ data_dict[ 'key' ] }}">
+	<br>
+	<br>
+	<br>
+    {% for key, value in data_dict[ 'event' ].attributes.items() %}
+      <label>{{ key }}:</label>
+      {% if value is boolean %}
+        <input type="checkbox" name="{{ key }}" {% if value %} checked {% endif %}><br>
+      {% else %}
+        <input type="text" name="{{ key }}" value="{{ value }}"><br>
+      {% endif %}
+    {% endfor %}
+	</br>
+    <input type="submit" value="Submit">
+  </form>
+{% endblock %}
