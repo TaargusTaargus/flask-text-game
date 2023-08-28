@@ -41,6 +41,9 @@ class Event:
     def from_json_string(self, json_string):
         self.attributes = json.loads(json_string)
 
+    def to_json_serializable( self ):
+        return self.attributes
+        
 
 ## primitive event, returns a text
 class NarrativeEvent(Event):
@@ -125,7 +128,7 @@ class GameContext:
             data[ "events" ][ e ] = {
                     'type': self.events[ e ][ 'type' ]
                     , 'key': self.events[ e ][ 'key' ]
-                    , 'event': self.events[ e ][ 'event' ].to_json_string()
+                    , 'event': self.events[ e ][ 'event' ].to_json_serializable()
             }
 
         return json.dumps(data,indent=4)
@@ -138,7 +141,7 @@ class GameContext:
         for e in tmp:
             
             cls.events[ e ] = []
-            args = json.loads( tmp[ e ][ 'event' ] )
+            args = tmp[ e ][ 'event' ]
             cls.events[ e ] =  {
                 'type': tmp[ e ][ 'type' ]
                 , 'key': tmp[ e ][ 'key' ]
@@ -147,6 +150,18 @@ class GameContext:
                 
         return cls
 
+    def to_json_serializable(self):
+        data = { "events": {} }
+        for e in self.events:
+    
+            data[ "events" ][ e ] = {
+                    'type': self.events[ e ][ 'type' ]
+                    , 'key': self.events[ e ][ 'key' ]
+                    , 'event': self.events[ e ][ 'event' ].to_json_serializable()
+            }
+
+        return data
+    
 
 
 ## point of view
@@ -190,18 +205,18 @@ class PlayerContext:
         data = {
             "current": self.current,
             "narrative": self.narrative,
-            "possible": { e : self.possible[ e ].to_json_string() for e in self.possible }
+            "possible": { e : self.possible[ e ].to_json_serializable() for e in self.possible }
         }
         return json.dumps(data, indent=4)
 
 
-    def from_json_string(cls, json_string):
-        data = json.loads(json_string)
-        cls.current = data.get("current")
-        cls.narrative = data.get("narrative")
-        possible = data.get("possible",{})
-        for key in possible:
-            cls.possible[ key ] = GameContext.from_json_string( GameContext(), possible[ key ] )
+    def from_json_string( cls, json_string ):
+        data = json.loads( json_string)
+        cls.current = data.get( "current")
+        cls.narrative = data.get( "narrative" )
+        possible = data.get( "possible", {} )
+        for eid, value in possible.items():
+            cls.possible[ eid ] = GameContext.from_json_string( GameContext(), json.dumps( value ) )
         return cls
 
 

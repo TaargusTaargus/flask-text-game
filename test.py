@@ -15,14 +15,11 @@ def test_game():
     eid = gc2.add_event( "drink", TextEvent( "You drink the wine.", enable = False, persist = False ) )
     gc1.add_event( "wine", UpdateEvent( "You pick up the wine.", "two", eid, { 'enable': True } ) )
 
-
-
-    
     pc = PlayerContext()
     pc.current = 'one'
     pc.possible = {
-        'one': gc1
-        , 'two': gc2
+        'english': gc1
+        , 'french': gc2
     }
     return pc
 

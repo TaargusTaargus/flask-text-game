@@ -1,5 +1,5 @@
 from datetime import timedelta
-from flask import Flask, render_template, redirect, request, session, url_for
+from flask import Flask, redirect, render_template, request, Response, session, url_for
 from game import EVENT_FACTORY, GameContext, PlayerContext
 from test import test_game
 
@@ -15,6 +15,18 @@ def __check_session__( force_reset = False ):
         
     return PlayerContext.from_json_string( PlayerContext(), session[ 'game' ] )
 
+
+@app.route('/download_game')
+def download_json():
+    game = __check_session__()
+    
+    # Create a response with the JSON data
+    response = Response( game.to_json_string(), content_type='application/json' )
+    
+    # Set the content-disposition header to trigger download
+    response.headers[ "Content-Disposition" ] = "attachment; filename=data.json"
+    
+    return response
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -34,7 +46,7 @@ def index():
             response = game.interact( user_input )
 
         session[ 'game' ] = game.to_json_string()
- 
+        
     return render_template( 'index.html', user_input = user_input, response = response )
 
 
