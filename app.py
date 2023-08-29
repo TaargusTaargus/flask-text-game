@@ -32,14 +32,12 @@ def download_json():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     game = __check_session__()
-    
-    user_input = ''
     response = ''
-        
+    user_input = ''
+    
     if request.method == 'POST':
         
         user_input = request.form.get('user_input')
-
         if user_input == "debug":
             response = game.to_json_string()
         else:
@@ -47,20 +45,31 @@ def index():
 
         session[ 'game' ] = game.to_json_string()
         
-    return render_template( 'index.html', user_input = user_input, response = response )
+    return render_template( 'index.html', response = response, user_input = user_input )
 
 
-@app.route('/game')
-def game():
+@app.route( '/edit/game', methods=['GET', 'POST'] )
+def edit_game():
     game = __check_session__()
-    return render_template( 'game.html', game = game )
+    
+    if request.method == 'POST':
+        game.current = request.form.get( 'current' )
+        session[ 'game' ] = game.to_json_string()
+        return redirect( url_for( 'edit_game' ) )
+    
+    return render_template( 'edit_game.html', game = game )
 
 
-@app.route('/context/<roomid>')
-def context( roomid ):
-    game = __check_session__()
-    context = game.possible[ roomid ]
-    return render_template( 'context.html', context = context, roomid = roomid )
+@app.route('/new_game')
+def new_game():
+    session[ 'game' ] = PlayerContext().to_json_string()
+    return redirect( url_for( 'edit_game' ) )
+
+
+@app.route('/reset_game')
+def reset_game():
+    game = __check_session__( force_reset = True )
+    return redirect( url_for( 'index' ) )
 
 
 @app.route('/context/add', methods=['GET', 'POST'])
@@ -70,9 +79,24 @@ def add_context():
     if request.method == 'POST':
         game.possible[ request.form.get( 'key' ) ] = GameContext()
         session[ 'game' ] = game.to_json_string()
-        return redirect( url_for( 'game' ) )
+        return redirect( url_for( 'edit_game' ) )
 
     return render_template( 'add_context.html' )
+
+
+@app.route('/event/delete/<roomid>')
+def delete_context( roomid ):
+    game = __check_session__()
+    game.remove_gamecontext( roomid )
+    session[ 'game' ] = game.to_json_string()
+    return redirect( url_for( 'edit_game' ) )
+
+
+@app.route('/context/edit/<roomid>')
+def edit_context( roomid ):
+    game = __check_session__()
+    context = game.possible[ roomid ]
+    return render_template( 'edit_context.html', context = context, roomid = roomid )
 
 
 @app.route('/event/add/<roomid>/<etype>', methods=['GET', 'POST'])
@@ -84,8 +108,8 @@ def add_event( roomid, etype ):
         
         form_name = request.form.get( 'form_name' )
         
-        if form_name == 'etype':
-            return redirect( url_for( 'add_event', roomid = roomid, etype = request.form.get( 'etype' ) ) )
+        if form_name == 'event_type_form':
+            return redirect( url_for( 'add_event', roomid = roomid, etype = request.form.get( 'event_type' ) ) )
         else:
             attributes = event_entry.attributes
             for key in attributes:
@@ -96,10 +120,17 @@ def add_event( roomid, etype ):
 
             game.possible[ roomid ].add_event( request.form.get( 'key' ), event_entry )
             session[ 'game' ] = game.to_json_string()
-            return redirect( url_for( 'context', roomid = roomid ) )
-    
+            return redirect( url_for( 'edit_context', roomid = roomid ) )
+
     return render_template( 'add_event.html', data_dict = event_entry, event_types = EVENT_FACTORY.keys() )
 
+
+@app.route('/event/delete/<roomid>/<eid>')
+def delete_event( roomid, eid ):
+    game = __check_session__()
+    game.possible[ roomid ].remove_event( eid )
+    session[ 'game' ] = game.to_json_string()
+    return redirect( url_for( 'edit_context', roomid = roomid ) )
 
 @app.route('/event/edit/<roomid>/<eid>', methods=['GET', 'POST'])
 def edit_event( roomid, eid ):
@@ -121,13 +152,6 @@ def edit_event( roomid, eid ):
 
     return render_template( 'edit_event.html', data_dict = event_entry, roomid = roomid, eid = eid, )
 
-
-@app.route('/event/delete/<roomid>/<eid>')
-def delete_event( roomid, eid ):
-    game = __check_session__()
-    game.possible[ roomid ].remove_event( eid )
-    session[ 'game' ] = game.to_json_string()
-    return redirect( url_for( 'context', roomid = roomid ) )
 
 
 if __name__ == '__main__':

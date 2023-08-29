@@ -4,7 +4,7 @@ def test_game():
     gc1 = GameContext()
     gc1.add_event( "hello", TextEvent( "Hello!" ) )
     gc1.add_event( "goodbye", TextEvent( "Goodbye!" ) )
-    gc1.add_event( "french", MoveEvent( 'move' ) )
+    gc1.add_event( "french", MoveEvent( 'french' ) )
 
 
     gc2 = GameContext()
@@ -13,7 +13,7 @@ def test_game():
     gc2.add_event( "english", MoveEvent( 'english' ) )
 
     eid = gc2.add_event( "drink", TextEvent( "You drink the wine.", enable = False, persist = False ) )
-    gc1.add_event( "wine", UpdateEvent( "You pick up the wine.", "two", eid, { 'enable': True } ) )
+    gc1.add_event( "wine", UpdateEvent( "You pick up the wine.", "french", eid, { 'enable': True } ) )
 
     pc = PlayerContext()
     pc.current = 'english'

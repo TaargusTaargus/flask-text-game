@@ -4,23 +4,23 @@
   <h1>Add Event</h1>  
 
 
-    <form method="post">
-        <input type="hidden" name="form_name" value="etype">
-        <label for="etype">Event Type:</label>
-        <select id="etype" name="etype">
-           {% for key in event_types %}
-             <option value="{{ key }}">{{ key }}</option>
-           {% endfor %}
-        </select>
-        <button type="submit">Update Type</button>
-    </form>
-
+  <form method="post">
+    <input type="hidden" name="form_name" value="event_type_form">
+    <label for="event_type">Event Type:</label>
+    <select id="event_type" name="event_type">
+      {% for key in event_types %}
+      <option value="{{ key }}" {% if key == data_dict.type() %}selected{% endif %}>{{ key }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Update Type</button>
+  </form>
+  <br>
+  <br>
 
   <form method="POST">
-    <input type="hidden" name="form_name" value="attributes">
+    <input type="hidden" name="form_name" value="event_attributes_form">
 	<label>Event Name:</label>
 	<input type="text" name="key">
-	<br>
 	<br>
 	<br>
     {% for key, value in data_dict.attributes.items() %}

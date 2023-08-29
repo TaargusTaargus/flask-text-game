@@ -193,6 +193,15 @@ class PlayerContext:
             return f"Try one of these inputs: {', '.join( [ current.events[ event ][ 'key' ] for event in current.events if current.events[ event ][ 'event' ].enable() ] )}"
 
 
+    def add_gamecontext(self, context_name, context ):
+        self.possible[ context_name ] = context
+        return context_name
+
+
+    def remove_gamecontext(self, gc_id):
+        del self.possible[ gc_id ]
+        
+
     def to_json_string(self):
         data = {
             "current": self.current,
