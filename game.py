@@ -1,14 +1,6 @@
 import json
 import time
 
-
-EVENT_ATTRIBUTES = {
-    "text": { 'return_text' }
-    , "move": { 'next_context' }
-    , 'narrative': { 'return_text' }
-    , "update": { 'return_text', 'gc_id', 'event_name', 'event_type', 'event_args' }
-}
-
 EVENT_FACTORY = {
     "move": lambda args : MoveEvent( **args )
     , "narrative": lambda args : NarrativeEvent( **args )
