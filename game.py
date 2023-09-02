@@ -70,7 +70,7 @@ class UpdateEvent(Event):
 ## primitive event, returns a text
 class TextEvent(Event):
     def __init__(self, return_text = "", enable = True, persist = True):
-        super().__init__( {"return_text": return_text, "persist": persist}, enable, persist )
+        super().__init__( {"return_text": return_text}, enable, persist )
 
     def fire(self, context):
         return self.attributes[ 'return_text' ]

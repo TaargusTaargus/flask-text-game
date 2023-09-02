@@ -36,8 +36,8 @@ def index():
     user_input = ''
     
     if request.method == 'POST':
+        user_input = request.form.get( 'user_input' )
         
-        user_input = request.form.get('user_input')
         if user_input == "debug":
             response = game.to_json_string()
         else:
@@ -122,7 +122,12 @@ def add_event( roomid, etype ):
             session[ 'game' ] = game.to_json_string()
             return redirect( url_for( 'edit_context', roomid = roomid ) )
 
-    return render_template( 'add_event.html', data_dict = event_entry, event_types = EVENT_FACTORY.keys() )
+    return render_template(
+        'add_event.html'
+        , event = event_entry
+        , event_type = etype
+        , event_types = EVENT_FACTORY.keys()
+    )
 
 
 @app.route('/event/delete/<roomid>/<eid>')
@@ -131,6 +136,7 @@ def delete_event( roomid, eid ):
     game.possible[ roomid ].remove_event( eid )
     session[ 'game' ] = game.to_json_string()
     return redirect( url_for( 'edit_context', roomid = roomid ) )
+
 
 @app.route('/event/edit/<roomid>/<eid>', methods=['GET', 'POST'])
 def edit_event( roomid, eid ):
@@ -148,9 +154,15 @@ def edit_event( roomid, eid ):
                 
         event_entry[ 'key' ] = request.form.get( 'key' )
         session[ 'game' ] = game.to_json_string()
-        return redirect( url_for( 'context', roomid = roomid ) )
+        return redirect( url_for( 'edit_context', roomid = roomid ) )
 
-    return render_template( 'edit_event.html', data_dict = event_entry, roomid = roomid, eid = eid, )
+    return render_template(
+        'edit_event.html'
+        , event = event_entry[ 'event' ]
+        , event_key = event_entry[ 'key' ]
+        , event_type = event_entry[ 'type' ]
+        , roomid = roomid, eid = eid
+    )
 
 
 

@@ -1,21 +1,14 @@
-{% extends "base.html" %}
+{% extends "navbar.html" %}
 
 {% block content %}
   <h1>Edit Event</h1>
   <form method="POST">
 	<label>Event Name:</label>
-	<input type="text" name="key" value="{{ data_dict[ 'key' ] }}">
+	<input type="text" name="key" value="{{ event_key }}">
 	<br>
 	<br>
 	<br>
-    {% for key, value in data_dict[ 'event' ].attributes.items() %}
-      <label>{{ key }}:</label>
-      {% if value is boolean %}
-        <input type="checkbox" name="{{ key }}" {% if value %} checked {% endif %}><br>
-      {% else %}
-        <input type="text" name="{{ key }}" value="{{ value }}"><br>
-      {% endif %}
-    {% endfor %}
+    {% include 'events/' + event_type + '_event.html' %}
 	<br>
     <input type="submit" value="Submit">
     <a href="{{ url_for( 'delete_event', roomid = roomid, eid = eid ) }}">Delete</a>
