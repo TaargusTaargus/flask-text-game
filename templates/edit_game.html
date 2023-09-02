@@ -9,12 +9,16 @@
 	<body>
 		<h1>Edit Game</h1>
         <form method="POST">
-            <label>Game Current Context:</label>
-            <input type="text" name="current" value="{{ game.current }}">
+            <label><b>Game Current Context</b>:</label>
+			<select id="current" name="current">
+			  {% for key in game.possible %}
+			  <option value="{{ key }}" {% if key == game.current %}selected{% endif %}>{{ key }}</option>
+			  {% endfor %}
+			</select>
             <br>
             <br>
 
-            <label>Game Possible Contexts:</label>
+            <label><b>Game Possible Contexts</b>:</label>
             <ul>
                 <li><a href="{{ url_for( 'add_context' ) }}">{new room}</a></li>
                 {% for key in game.possible %}

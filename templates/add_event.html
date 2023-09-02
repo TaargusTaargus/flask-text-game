@@ -6,7 +6,7 @@
 
   <form method="post">
     <input type="hidden" name="form_name" value="event_type_form">
-    <label for="event_type">Event Type:</label>
+    <label for="event_type"><b>Event Type</b>:</label>
     <select id="event_type" name="event_type">
       {% for key in event_types %}
       <option value="{{ key }}" {% if key == event.type() %}selected{% endif %}>{{ key }}</option>
@@ -19,7 +19,7 @@
 
   <form method="POST">
     <input type="hidden" name="form_name" value="event_attributes_form">
-	<label>Event Name:</label>
+	<label><b>Event Name</b>:</label>
 	<input type="text" name="key">
 	<br>
 	<br>
