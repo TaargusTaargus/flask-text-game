@@ -1,9 +1,11 @@
-{% for key, value in event.attributes.items() %}
-	<label>{{ key }}:</label>
-	{% if value is boolean %}
-		<input type="checkbox" name="{{ key }}" {% if value %} checked {% endif %}><br>
-	{% else %}
-		<br><textarea type="text" name="{{ key }}" rows = "5" cols = "100" value="{{ value }}"></textarea><br>
-	{% endif %}
-{% endfor %}
-
+<label><b>New Context</b> (next_context):</label>
+<br>
+<input type="text" name="next_context" value="{{ event.attributes[ 'next_context' ] }}">
+<br>
+<br>
+<label><b>Enable</b> (enable):</label>
+<input type="checkbox" name="enable" {% if event[ 'enable' ] %} checked {% endif %}>
+<br>
+<label><b>Persist</b> (persist):</label>
+<input type="checkbox" name="persist" {% if event[ 'persist' ] %} checked {% endif %}>
+<br>

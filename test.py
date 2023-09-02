@@ -1,4 +1,5 @@
 from game import GameContext, PlayerContext, TextEvent, MoveEvent, UpdateEvent
+import json
 
 def test_game():
     gc1 = GameContext()
@@ -13,7 +14,7 @@ def test_game():
     gc2.add_event( "english", MoveEvent( 'english' ) )
 
     eid = gc2.add_event( "drink", TextEvent( "You drink the wine.", enable = False, persist = False ) )
-    gc1.add_event( "wine", UpdateEvent( "You pick up the wine.", "french", eid, { 'enable': True } ) )
+    gc1.add_event( "wine", UpdateEvent( "You pick up the wine.", "french", eid, json.dumps( { 'persist': True, 'enable': True } ) ) )
 
     pc = PlayerContext()
     pc.current = 'english'

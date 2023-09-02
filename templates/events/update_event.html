@@ -1,9 +1,30 @@
-{% for key, value in event.attributes.items() %}
-	<label>{{ key }}:</label>
-	{% if value is boolean %}
-		<input type="checkbox" name="{{ key }}" {% if value %} checked {% endif %}><br>
-	{% else %}
-		<br><textarea type="text" name="{{ key }}" rows = "5" cols = "100" value="{{ value }}"></textarea><br>
-	{% endif %}
-{% endfor %}
+<label><b>Event Return Text</b> (return_text):</label>
+<br>
+<textarea type="text" name="return_text" rows = "5" cols = "100">{{ event.attributes[ 'return_text' ] }}</textarea>
+<br>
+<br>
 
+<label><b>Context to Update</b> (gc_id):</label>
+<br>
+<input type="text" name="gc_id" value="{{ event.attributes[ 'gc_id' ] }}">
+<br>
+<br>
+
+<label><b>Event to Update</b> (event_id):</label>
+<br>
+<input type="text" name="event_id" value="{{ event.attributes[ 'event_id' ] }}">
+<br>
+<br>
+
+<label><b>New Attributes</b> (nattributes):</label>
+<br>
+<textarea type="text" name="nattributes" rows = "5" cols = "100">{{ event.attributes[ 'nattributes' ] }}</textarea>
+<br>
+<br>
+
+<label><b>Enable</b> (enable):</label>
+<input type="checkbox" name="enable" {% if event[ 'enable' ] %} checked {% endif %}>
+<br>
+<label><b>Persist</b> (persist):</label>
+<input type="checkbox" name="persist" {% if event[ 'persist' ] %} checked {% endif %}>
+<br>

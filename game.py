@@ -54,12 +54,12 @@ class NarrativeEvent(Event):
 ## update event attributes
 class UpdateEvent(Event):
     def __init__(self, return_text = "", gc_id = "", event_id = "", nattributes = "", enable = True, persist = False):
-        super().__init__( {"return_text": return_text, "gc_id": gc_id, "event_id": event_id, "nattributes": nattributes}, enable, persist )
+        super().__init__( {"return_text": return_text, "gc_id": gc_id, "event_id": event_id, "nattributes": json.dumps( json.loads( nattributes ), indent = 4 )}, enable, persist )
         
     def fire(self, context):
         event = context.possible[ self.attributes[ 'gc_id' ] ].events[ self.attributes[ 'event_id' ] ][ 'event' ]
-        for key in self.attributes[ 'nattributes' ]:
-            event.attributes[ key ] = self.attributes[ 'nattributes' ][ key ]
+        for key, value in json.loads( self.attributes[ 'nattributes' ] ).items():
+            event.attributes[ key ] = value
 
         return self.attributes[ 'return_text' ]
 

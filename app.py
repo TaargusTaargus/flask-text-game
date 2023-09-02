@@ -158,10 +158,11 @@ def edit_event( roomid, eid ):
 
     return render_template(
         'edit_event.html'
+        , eid = eid
         , event = event_entry[ 'event' ]
         , event_key = event_entry[ 'key' ]
         , event_type = event_entry[ 'type' ]
-        , roomid = roomid, eid = eid
+        , roomid = roomid
     )
 
 
